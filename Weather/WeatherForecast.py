@@ -4,7 +4,7 @@ import streamlit as st
 
 # Constants
 API_KEY = '1e85e515955ab179f301c563b30d3233'
-CSV_FILE = 'worldcities.csv'
+CSV_FILE = 'Weather/worldcities.csv'
 
 # Load city data
 df_lat_long = pd.read_csv(CSV_FILE, delimiter=',')
@@ -57,4 +57,4 @@ if title:
             st.error("Failed to retrieve weather data. Please check the city name or try again later.")
     else:
         st.error("City not found. Please check the city name and try again.")
-# To run the app type in terminal: streamlit run WeatherForecast.py
+# To run the app type in terminal: streamlit run Weather/WeatherForecast.py
