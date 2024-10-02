@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
+targetfile = 'WebUrlTester.xlsx'
 def request_url(url):
     try:
         reqs = requests.get(url)
@@ -12,30 +12,48 @@ def request_url(url):
         print(f"An error occurred: {e}")
         exit()
 
-targetfile = 'WebUrlTester.xlsx'
+
 
 #url = 'https://www.alza.cz/hracky/lego/vyprodej-akce-sleva/18851136-e0'
 url = 'https://www.lego.com/cs-cz/categories/new-sets-and-products'
 
+# Fetch the page content
+response = requests.get(url)
 
-soup = request_url(url)
+if response.status_code == 200:
+    # Parse the HTML content using BeautifulSoup
+    soup = BeautifulSoup(response.content, "html.parser")
 
+    # Create an empty list to store product names, prices, and availability
+    products = []
 
-with open('html_scraping.html', 'w', encoding='utf-8') as file:
-    file.write(soup.prettify())
+    # Find all product containers (adjust based on actual structure of the site)
+    product_containers = soup.find_all("h3", class_="ProductLeaf_titleRow__KqWbB")  # This matches the product titles
 
+    # Iterate through each product container
+    for product in product_containers:
+        # Find the product name
+        name_element = product.find("a", class_="ProductLeaf_title__1UhfJ")
+        product_name = name_element.text.strip() if name_element else "N/A"
 
-#print(soup)
-print('------------------------------------------------------------')
+        # Find the price (traverse the parent div to get price associated with the product)
+        price_div = product.find_next("div", class_="ProductLeaf_priceRow__RUx3P")
+        price_element = price_div.find("span", {"data-test": "product-leaf-price"}) if price_div else None
+        product_price = price_element.text.strip() if price_element else "N/A"
 
+        # Check for availability (like "Coming Soon" message)
+        availability_element = product.find_next("a", {"data-test": "product-leaf-cta-coming-soon"})
+        availability_status = "Coming Soon" if availability_element else "Available"
 
-urls = []
+        # Add the product name, price, and availability to the list
+        products.append((product_name, product_price, availability_status))
 
-soup = soup.find('div', class_='pricevalue')
-
-print(soup)
-
-
+    # Print or store the product names, prices, and availability
+    print("Product Names, Prices, and Availability:")
+    for product in products:
+        print(f"Product: {product[0]} - Price: {product[1]} - Status: {product[2]}")
+else:
+    print(f"Failed to retrieve the webpage. Status code: {response.status_code}")
 
 '''
 
