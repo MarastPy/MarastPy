@@ -5,7 +5,7 @@ import kaggle
 
 def download_kaggle():
     try:
-        download_dir = r"C:\Marek\Programming\Python\DataSentics\Kaggle downloads"
+        download_dir = r"C:\Marek\Programming\Python\MarastPy\BookRecommendation\Kaggle downloads"
 
         # Ensure the directory exists
         os.makedirs(download_dir, exist_ok=True)

@@ -7,11 +7,11 @@ keggle = 'False  '
 
 # Reading Keggle or sd datasets
 if keggle == 'True':
-    df_ratings = pd.read_csv(r'BookRecommendation/Downloads/BX-Book-Ratings.csv', encoding='cp1251', sep=';')
-    df_books = pd.read_csv('BookRecommendation/Downloads/BX-Books.csv', encoding='cp1251', sep=';', on_bad_lines='skip', low_memory=False)
+    df_ratings = pd.read_csv(r'C:\Marek\Programming\Python\MarastPy\BookRecommendation\Downloads/BX-Book-Ratings.csv', encoding='cp1251', sep=';')
+    df_books = pd.read_csv('C:\Marek\Programming\Python\MarastPy\BookRecommendation\Downloads/BX-Books.csv', encoding='cp1251', sep=';', on_bad_lines='skip', low_memory=False)
 else:
-    df_ratings = pd.read_csv(r'BookRecommendation/Keggle downloads/Ratings.csv', encoding='cp1251', sep=',')
-    df_books = pd.read_csv('BookRecommendation/Keggle downloads/Books.csv', encoding='cp1251', sep=',', on_bad_lines='skip', low_memory=False)
+    df_ratings = pd.read_csv(r'C:\Marek\Programming\Python\MarastPy\BookRecommendation\Keggle downloads/Ratings.csv', encoding='cp1251', sep=',')
+    df_books = pd.read_csv('C:\Marek\Programming\Python\MarastPy\BookRecommendation\Keggle downloads/Books.csv', encoding='cp1251', sep=',', on_bad_lines='skip', low_memory=False)
 
 
 df_ratings.mean()
