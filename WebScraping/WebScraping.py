@@ -1,26 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-targetfile = 'WebUrlTester.xlsx'
-def request_url(url):
-    try:
-        reqs = requests.get(url)
-        reqs.raise_for_status()  # Check if the request was successful
-        soup = BeautifulSoup(reqs.text, 'html.parser')
-        return soup
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-        exit()
 
-
-
-#url = 'https://www.alza.cz/hracky/lego/vyprodej-akce-sleva/18851136-e0'
-url = 'https://www.lego.com/cs-cz/categories/new-sets-and-products'
+# Specify the target URL
+url = 'https://www.lego.com/cs-cz/categories/sales-and-deals'
 
 # Fetch the page content
 response = requests.get(url)
 
 if response.status_code == 200:
+    # Save the raw HTML to a file
+    with open("html_scraping.html", "w", encoding="utf-8") as file:
+        file.write(response.text)
+
     # Parse the HTML content using BeautifulSoup
     soup = BeautifulSoup(response.content, "html.parser")
 
@@ -38,7 +29,7 @@ if response.status_code == 200:
 
         # Find the price (traverse the parent div to get price associated with the product)
         price_div = product.find_next("div", class_="ProductLeaf_priceRow__RUx3P")
-        price_element = price_div.find("span", {"data-test": "product-leaf-price"}) if price_div else None
+        price_element = price_div.find("span", {"data-test": "product-leaf-discounted-price"}) if price_div else None
         product_price = price_element.text.strip() if price_element else "N/A"
 
         # Check for availability (like "Coming Soon" message)
@@ -55,6 +46,7 @@ if response.status_code == 200:
 else:
     print(f"Failed to retrieve the webpage. Status code: {response.status_code}")
 
+
 '''
 
 for link in soup.find_all('div', class_='pricevalue'):    
@@ -67,3 +59,4 @@ with pd.ExcelWriter(targetfile) as writer:
     pd.DataFrame(urls, columns=['URL']).to_excel(writer, sheet_name='Tester', index=False)
 
 '''
+
